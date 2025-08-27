@@ -1,32 +1,27 @@
-import { supabase } from "../../lib/supabaseClient";
-import { useRouter } from "next/router";
+import { supabase } from "../lib/supabaseClient";
 
-export default function EventPage({ event }) {
-  const router = useRouter();
-
-  const handleRSVP = async () => {
-    await supabase.from("rsvps").insert([{ event_id: event.id, user_id: "test-user" }]);
-    alert("RSVP Confirmed!");
-  };
-
+export default function EventsPage({ events }) {
   return (
-    <div style={{ padding: "20px" }}>
-      <h1>{event.title}</h1>
-      <p>Date: {event.event_date}</p>
-      <button onClick={handleRSVP}>RSVP</button>
-      <br /><br />
-      <button onClick={() => router.push("/")}>⬅ Back</button>
+    <div style={{ padding: 20 }}>
+      <h1>Events</h1>
+      {events.length === 0 ? (
+        <p>No events found</p>
+      ) : (
+        <ul>
+          {events.map((e) => (
+            <li key={e.id}>
+              <strong>{e.name}</strong> – {e.date}
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }
 
-export async function getServerSideProps({ params }) {
-  const { data: event } = await supabase
-    .from("events")
-    .select("*")
-    .eq("id", params.id)
-    .single();
-
-  return { props: { event } };
+export async function getServerSideProps() {
+  const { data, error } = await supabase.from("events").select("*");
+  return {
+    props: { events: data || [] },
+  };
 }
-Added users_table page fetching from Supabase
