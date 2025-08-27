@@ -10,7 +10,7 @@ export default function RsvpsPage({ rsvps }) {
         <ul>
           {rsvps.map((r) => (
             <li key={r.id}>
-              User {r.user_id} RSVP’d to Event {r.event_id}
+              <strong>{r.users_table?.name}</strong> RSVP’d to <em>{r.events?.name}</em>
             </li>
           ))}
         </ul>
@@ -20,7 +20,14 @@ export default function RsvpsPage({ rsvps }) {
 }
 
 export async function getServerSideProps() {
-  const { data, error } = await supabase.from("rsvps").select("*");
+  const { data, error } = await supabase
+    .from("rsvps")
+    .select(`
+      id,
+      users_table ( name ),
+      events ( name )
+    `);
+
   return {
     props: { rsvps: data || [] },
   };
