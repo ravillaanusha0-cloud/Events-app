@@ -1,25 +1,17 @@
-import { supabase } from "../lib/supabaseClient";
+
+// pages/index.js
 import Link from "next/link";
 
-export default function Home({ events }) {
+export default function Home() {
   return (
-    <div style={{ padding: "20px" }}>
-      <h1>📅 Events</h1>
-      <Link href="/create">➕ Create Event</Link>
-      <ul>
-        {events.map(event => (
-          <li key={event.id}>
-            <Link href={`/event/${event.id}`}>
-              {event.title} - {event.event_date}
-            </Link>
-          </li>
-        ))}
-      </ul>
+    <div style={{ padding: 20 }}>
+      <h1>Events App 🎉</h1>
+      <nav>
+        <Link href="/events">Events</Link> |{" "}
+        <Link href="/users">Users</Link> |{" "}
+        <Link href="/rsvps">RSVPs</Link>
+      </nav>
+      <p>Welcome! Use the links above to explore the app.</p>
     </div>
   );
-}
-
-export async function getServerSideProps() {
-  const { data: events } = await supabase.from("events").select("*");
-  return { props: { events } };
 }
