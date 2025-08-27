@@ -29,4 +29,4 @@ export async function getServerSideProps({ params }) {
 
   return { props: { event } };
 }
-Added Users page fetching from Supabase
+Added users_table page fetching from Supabase
