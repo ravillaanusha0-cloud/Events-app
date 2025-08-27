@@ -10,7 +10,7 @@ export default function UsersPage({ users }) {
         <ul>
           {users.map((u) => (
             <li key={u.id}>
-              {u.name} ({u.email})
+              <strong>{u.name}</strong> ({u.email})
             </li>
           ))}
         </ul>
