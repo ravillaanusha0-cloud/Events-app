@@ -14,6 +14,7 @@ export default function RSVPsPage() {
     }
     fetchRsvps();
   }, []);
+  
 
   return (
     <div style={{ padding: 20 }}>
@@ -28,3 +29,4 @@ export default function RSVPsPage() {
     </div>
   );
 }
+Added users_table page fetching from Supabase
