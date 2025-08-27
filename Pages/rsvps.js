@@ -1,32 +1,27 @@
-// pages/rsvps.js
-import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabaseClient";
 
-export default function rsvpsPage() {
-  const [rsvps, setrsvps] = useState([]);
-
-  useEffect(() => {
-    async function fetchrsvps() {
-      let { data, error } = await supabase
-        .from("rsvps")
-        .select("id, users_table(name), events(title)");
-      if (!error) setrsvps(data);
-    }
-    fetchrsvps();
-  }, []);
-  
-
+export default function RsvpsPage({ rsvps }) {
   return (
     <div style={{ padding: 20 }}>
-      <h1>rsvps 📌</h1>
-      <ul>
-        {rsvps.map((r) => (
-          <li key={r.id}>
-            {r.users_table?.name} rsvp’d for <strong>{r.events?.title}</strong>
-          </li>
-        ))}
-      </ul>
+      <h1>RSVPs</h1>
+      {rsvps.length === 0 ? (
+        <p>No RSVPs found</p>
+      ) : (
+        <ul>
+          {rsvps.map((r) => (
+            <li key={r.id}>
+              User {r.user_id} RSVP’d to Event {r.event_id}
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }
-Added users_table page fetching from Supabase
+
+export async function getServerSideProps() {
+  const { data, error } = await supabase.from("rsvps").select("*");
+  return {
+    props: { rsvps: data || [] },
+  };
+}
