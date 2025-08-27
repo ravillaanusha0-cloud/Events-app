@@ -27,3 +27,4 @@ export default function UsersPage() {
     </div>
   );
 }
+Added users_table page fetching from Supabase
