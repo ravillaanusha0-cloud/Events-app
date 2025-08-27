@@ -3,22 +3,22 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabaseClient";
 
-export default function UsersPage() {
-  const [users, setUsers] = useState([]);
+export default function users_tablePage() {
+  const [users_table, setUsers] = useState([]);
 
   useEffect(() => {
-    async function fetchUsers() {
-      let { data, error } = await supabase.from("users").select("*");
-      if (!error) setUsers(data);
+    async function fetchusers_table() {
+      let { data, error } = await supabase.from("users_table").select("*");
+      if (!error) setusers_table(data);
     }
-    fetchUsers();
+    fetchusers_table();
   }, []);
 
   return (
     <div style={{ padding: 20 }}>
-      <h1>Users 👥</h1>
+      <h1>users_table 👥</h1>
       <ul>
-        {users.map((u) => (
+        {users_table.map((u) => (
           <li key={u.id}>
             {u.name} – {u.email}
           </li>
