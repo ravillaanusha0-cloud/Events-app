@@ -1,19 +1,29 @@
+
+// pages/users.js
+import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabaseClient";
 
-export default function Users({ users }) {
+export default function UsersPage() {
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    async function fetchUsers() {
+      let { data, error } = await supabase.from("users").select("*");
+      if (!error) setUsers(data);
+    }
+    fetchUsers();
+  }, []);
+
   return (
-    <div>
-      <h1>Users</h1>
+    <div style={{ padding: 20 }}>
+      <h1>Users 👥</h1>
       <ul>
-        {users.map(user => (
-          <li key={user.id}>{user.name} ({user.email})</li>
+        {users.map((u) => (
+          <li key={u.id}>
+            {u.name} – {u.email}
+          </li>
         ))}
       </ul>
     </div>
   );
-}
-
-export async function getServerSideProps() {
-  const { data, error } = await supabase.from("users").select("*");
-  return { props: { users: data || [] } };
 }
