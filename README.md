@@ -17,6 +17,3 @@ This is a simple Next.js + Supabase project where:
 1. Clone repo
 2. Run `npm install`
 3. Add `.env.local` file with:
-git add .
-git commit -m "Added Supabase client and pages"
-git push origin main
