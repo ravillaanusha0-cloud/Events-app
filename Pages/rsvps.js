@@ -1,27 +1,32 @@
-import { supabase } from '../../lib/supabaseClient';
+import { supabase } from "../../lib/supabaseClient";
 
-export default function RSVPsPage({ rsvps }) {
+export default function RSVPs({ rsvps }) {
   return (
-    <div style={{ padding: 20 }}>
+    <div>
       <h1>RSVPs</h1>
-      {rsvps.length === 0 ? (
-        <p>No RSVPs found</p>
-      ) : (
-        <ul>
-          {rsvps.map((r) => (
-            <li key={r.id}>
-              User {r.user_id} → Event {r.event_id} (Status: {r.status})
-            </li>
-          ))}
-        </ul>
-      )}
+      <ul>
+        {rsvps.map((rsvp) => (
+          <li key={rsvp.id}>
+            <p>User ID: {rsvp.user_id}</p>
+            <p>Event ID: {rsvp.event_id}</p>
+            <p>Status: {rsvp.status}</p>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
 
 export async function getServerSideProps() {
   const { data, error } = await supabase.from("rsvps").select("*");
+
+  if (error) {
+    console.error(error);
+  }
+
   return {
-    props: { rsvps: data || [] },
+    props: {
+      rsvps: data || [],
+    },
   };
 }
