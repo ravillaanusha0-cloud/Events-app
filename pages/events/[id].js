@@ -1,11 +1,9 @@
-
-// pages/events/index.js
-import { supabase } from "../../lib/supabaseClient";
+import { supabase } from "../lib/supabaseClient";
 import Link from "next/link";
 
 export default function Events({ events }) {
   return (
-    <div>
+    <div style={{ padding: "2rem" }}>
       <h1>Events</h1>
       <ul>
         {events.map((event) => (
@@ -21,6 +19,7 @@ export default function Events({ events }) {
 }
 
 export async function getServerSideProps() {
-  const { data: events } = await supabase.from("events").select("*");
-  return { props: { events: events || [] } };
+  const { data, error } = await supabase.from("events").select("*");
+  if (error) console.error("Fetch events error:", error.message);
+  return { props: { events: data || [] } };
 }
