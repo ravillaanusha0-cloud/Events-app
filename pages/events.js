@@ -27,6 +27,4 @@ export default function Events() {
     </div>
   )
 }
-git add .
-git commit -m "Added Supabase client and pages"
-git push origin main
+
