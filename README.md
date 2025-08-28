@@ -32,3 +32,6 @@ It demonstrates a simple event management app using **Next.js (frontend)**, **Su
 1. Clone this repository:
    ```bash
    git clone https://github.com/ravillaanusha0-cloud/Events-app.git
+   git add README.md
+git commit -m "Added README with project details and submission links"
+git push origin main
