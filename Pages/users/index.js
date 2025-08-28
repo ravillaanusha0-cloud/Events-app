@@ -1,17 +1,21 @@
-import { supabase } from "../lib/supabaseClient";
+import { createClient } from "@supabase/supabase-js";
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+);
 
 export default function Users({ users }) {
   return (
     <div>
       <h1>Users</h1>
       {users.length === 0 ? (
-        <p>No users found.</p>
+        <p>No users found</p>
       ) : (
         <ul>
           {users.map((user) => (
             <li key={user.userid}>
-              <strong>{user.name}</strong> – {user.email} <br />
-              Joined: {user.created_at}
+              {user.name} ({user.email})
             </li>
           ))}
         </ul>
@@ -29,4 +33,4 @@ export async function getServerSideProps() {
   }
 
   return { props: { users: data || [] } };
-        }
+}
