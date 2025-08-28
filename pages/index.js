@@ -13,3 +13,4 @@ export default function Home() {
     </div>
   );
 }
+import { supabase } from '../../lib/supabaseClient';
