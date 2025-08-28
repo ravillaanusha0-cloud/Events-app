@@ -1,17 +1,21 @@
-import { supabase } from "../../lib/supabaseClient";
+import { supabase } from "../lib/supabaseClient";
 
 export default function Users({ users }) {
   return (
     <div>
       <h1>Users</h1>
-      <ul>
-        {users.map((user) => (
-          <li key={user.id}>
-            <h2>{user.name}</h2>
-            <p>Email: {user.email}</p>
-          </li>
-        ))}
-      </ul>
+      {users.length === 0 ? (
+        <p>No users found.</p>
+      ) : (
+        <ul>
+          {users.map((user) => (
+            <li key={user.userid}>
+              <strong>{user.name}</strong> – {user.email} <br />
+              Joined: {user.created_at}
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }
@@ -20,12 +24,9 @@ export async function getServerSideProps() {
   const { data, error } = await supabase.from("users_table").select("*");
 
   if (error) {
-    console.error(error);
+    console.error("Error fetching users:", error.message);
+    return { props: { users: [] } };
   }
 
-  return {
-    props: {
-      users: data || [],
-    },
-  };
-}
+  return { props: { users: data || [] } };
+        }
