@@ -43,4 +43,4 @@ export async function getServerSideProps({ params }) {
   return {
     props: { event, rsvps: rsvps || [] },
   };
-      }
+}
