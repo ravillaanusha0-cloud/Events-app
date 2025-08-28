@@ -1,4 +1,4 @@
-import { supabase } from "../../lib/supabaseClient";
+import { supabase } from '../../lib/supabaseClient';
 
 export default function Events({ events }) {
   return (
@@ -6,11 +6,9 @@ export default function Events({ events }) {
       <h1>Events</h1>
       <ul>
         {events.map((event) => (
-          <li key={event.id}>
-            <h2>{event.name}</h2>
+          <li key={event.eventid}>
+            <h2>{event.title}</h2>
             <p>{event.description}</p>
-            <p>Date: {event.date}</p>
-            <p>Location: {event.location}</p>
           </li>
         ))}
       </ul>
@@ -19,15 +17,10 @@ export default function Events({ events }) {
 }
 
 export async function getServerSideProps() {
-  const { data, error } = await supabase.from("events").select("*");
-
+  const { data: events, error } = await supabase.from('events').select('*');
   if (error) {
     console.error(error);
+    return { props: { events: [] } };
   }
-
-  return {
-    props: {
-      events: data || [],
-    },
-  };
+  return { props: { events } };
 }
