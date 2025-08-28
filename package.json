@@ -13,3 +13,6 @@
     "react-dom": "18.2.0"
   }
 }
+git add .
+git commit -m "Added Supabase client and pages"
+git push origin main
