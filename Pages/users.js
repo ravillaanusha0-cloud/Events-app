@@ -1,28 +1,42 @@
-import { supabase } from "../lib/supabaseClient";
+// pages/users.js
+import { useEffect, useState } from "react"
+import { supabase } from "../lib/supabaseClient"
 
-export default function Users({ users }) {
+export default function Users() {
+  const [users, setUsers] = useState([])
+  const [name, setName] = useState("")
+  const [email, setEmail] = useState("")
+
+  useEffect(() => {
+    fetchUsers()
+  }, [])
+
+  async function fetchUsers() {
+    const { data } = await supabase.from("users_table").select("*")
+    setUsers(data)
+  }
+
+  async function addUser(e) {
+    e.preventDefault()
+    await supabase.from("users_table").insert([{ name, email }])
+    setName("")
+    setEmail("")
+    fetchUsers()
+  }
+
   return (
-    <div style={{ padding: "2rem" }}>
-      <h1>Users</h1>
-      {users.length === 0 ? (
-        <p>No users found.</p>
-      ) : (
-        <ul>
-          {users.map((user) => (
-            <li key={user.userid}>
-              <strong>{user.name}</strong> — {user.email}
-              <br />
-              Joined: {user.created_at}
-            </li>
-          ))}
-        </ul>
-      )}
+    <div style={{ padding: 20 }}>
+      <h2>Users</h2>
+      <form onSubmit={addUser}>
+        <input placeholder="Name" value={name} onChange={e => setName(e.target.value)} required />
+        <input placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} required />
+        <button type="submit">Add User</button>
+      </form>
+      <ul>
+        {users?.map(u => (
+          <li key={u.userid}>{u.name} ({u.email})</li>
+        ))}
+      </ul>
     </div>
-  );
-}
-
-export async function getServerSideProps() {
-  const { data, error } = await supabase.from("users_table").select("*");
-  if (error) console.error("Fetch users error:", error.message);
-  return { props: { users: data || [] } };
-}
+  )
+  }
