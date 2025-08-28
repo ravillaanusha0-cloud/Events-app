@@ -1,21 +1,16 @@
-import { createClient } from "@supabase/supabase-js";
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-);
+import { supabase } from "../lib/supabaseClient";
 
 export default function RSVPs({ rsvps }) {
   return (
-    <div>
+    <div style={{ padding: "2rem" }}>
       <h1>RSVPs</h1>
       {rsvps.length === 0 ? (
-        <p>No RSVPs found</p>
+        <p>No RSVPs found.</p>
       ) : (
         <ul>
           {rsvps.map((rsvp) => (
             <li key={rsvp.rsvpid}>
-              User: {rsvp.userid} | Event: {rsvp.eventid} | Status: {rsvp.status}
+              RSVP ID: {rsvp.rsvpid} — User ID: {rsvp.userid} — Event ID: {rsvp.eventid} — Status: {rsvp.status}
             </li>
           ))}
         </ul>
@@ -26,11 +21,6 @@ export default function RSVPs({ rsvps }) {
 
 export async function getServerSideProps() {
   const { data, error } = await supabase.from("rsvps").select("*");
-
-  if (error) {
-    console.error("Error fetching RSVPs:", error.message);
-    return { props: { rsvps: [] } };
-  }
-
+  if (error) console.error("Fetch RSVPs error:", error.message);
   return { props: { rsvps: data || [] } };
 }
