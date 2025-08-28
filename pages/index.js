@@ -1,18 +1,15 @@
-
-// pages/index.js
 import Link from "next/link";
 
 export default function Home() {
   return (
     <div style={{ padding: 20 }}>
-      <h1>Events App 🎉</h1>
-      <nav>
-        <Link href="/events">Events</Link> |{" "}
-        <Link href="/users">Users</Link> |{" "}
-        <Link href="/rsvps">RSVPs</Link>
-      </nav>
-      <p>Welcome! Use the links above to explore the app.</p>
+      <h1>Welcome to Events Platform 🎉</h1>
+      <p>Navigate to see data:</p>
+      <ul>
+        <li><Link href="/users">Users</Link></li>
+        <li><Link href="/events">Events</Link></li>
+        <li><Link href="/rsvps">RSVPs</Link></li>
+      </ul>
     </div>
   );
 }
-Added homepage with navigation
