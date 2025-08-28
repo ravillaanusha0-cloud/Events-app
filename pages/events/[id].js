@@ -1,4 +1,4 @@
-import { supabase } from "../lib/supabaseClient";
+import { supabase } from '../../lib/supabaseClient';
 
 export default function EventsPage({ events }) {
   return (
@@ -25,3 +25,4 @@ export async function getServerSideProps() {
     props: { events: data || [] },
   };
 }
+
