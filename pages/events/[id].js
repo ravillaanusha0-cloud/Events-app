@@ -10,7 +10,7 @@ export default function EventsPage({ events }) {
         <ul>
           {events.map((e) => (
             <li key={e.id}>
-              <strong>{e.name}</strong> – {e.date}
+              {e.title} - {e.date}
             </li>
           ))}
         </ul>
