@@ -1,37 +1,33 @@
-import { useState } from "react";
-import { supabase } from "../lib/supabaseClient";
-import { useRouter } from "next/router";
+import { useState } from 'react';
+import { supabase } from '../lib/supabaseClient';
 
 export default function CreateEvent() {
-  const [title, setTitle] = useState("");
-  const [eventDate, setEventDate] = useState("");
-  const router = useRouter();
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
 
-  const handleSubmit = async (e) => {
+  async function handleSubmit(e) {
     e.preventDefault();
-    await supabase.from("events").insert([{ title, event_date: eventDate }]);
-    router.push("/");
-  };
+    const { error } = await supabase
+      .from('events')
+      .insert([{ title, description }]);
+    if (error) console.error(error);
+    else alert('Event created!');
+  }
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h1>➕ Create Event</h1>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Event Title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          required
-        /><br /><br />
-        <input
-          type="date"
-          value={eventDate}
-          onChange={(e) => setEventDate(e.target.value)}
-          required
-        /><br /><br />
-        <button type="submit">Create</button>
-      </form>
-    </div>
+    <form onSubmit={handleSubmit}>
+      <input
+        type="text"
+        placeholder="Title"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+      />
+      <textarea
+        placeholder="Description"
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+      />
+      <button type="submit">Create Event</button>
+    </form>
   );
 }
