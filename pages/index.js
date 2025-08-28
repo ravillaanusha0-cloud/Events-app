@@ -1,16 +1,32 @@
-import Link from "next/link";
+import { supabase } from "../../lib/supabaseClient";
 
-export default function Home() {
+export default function RSVPs({ rsvps }) {
   return (
-    <div style={{ padding: 20 }}>
-      <h1>Welcome to Events Platform 🎉</h1>
-      <p>Navigate to see data:</p>
+    <div>
+      <h1>RSVPs</h1>
       <ul>
-        <li><Link href="/users">Users</Link></li>
-        <li><Link href="/events">Events</Link></li>
-        <li><Link href="/rsvps">RSVPs</Link></li>
+        {rsvps.map((rsvp) => (
+          <li key={rsvp.id}>
+            <p>User ID: {rsvp.user_id}</p>
+            <p>Event ID: {rsvp.event_id}</p>
+            <p>Status: {rsvp.status}</p>
+          </li>
+        ))}
       </ul>
     </div>
   );
 }
-import { supabase } from '../lib/supabaseClient';
+
+export async function getServerSideProps() {
+  const { data, error } = await supabase.from("rsvps").select("*");
+
+  if (error) {
+    console.error(error);
+  }
+
+  return {
+    props: {
+      rsvps: data || [],
+    },
+  };
+}
